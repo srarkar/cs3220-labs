@@ -65,7 +65,7 @@ assign from_WB_to_DE = {wr_reg_WB, wregno_WB, regval_WB} ;
     reg [`REGWORDS-1:0][31:0] last_WB_value /* verilator public */;
 
 
-  always @(negedge clk) begin
+  always @(posedge clk) begin
   if (reset) begin
       for (int i = 0; i < `REGWORDS; ++i) begin
         last_WB_value[i] <= 0;

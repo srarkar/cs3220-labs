@@ -18,7 +18,7 @@
 // address space is m 0x00000000 to 0x000fffff
   // [NOTICE] please note that both imem and dmem use the SAME "IDMEMINITFILE".
   // you need to change this line to change which test file to read 
-  `define IDMEMINITFILE "/home/zhifan/workspace/cs3220-23fall/lab1/test/part1/test4.mem"
+  `define IDMEMINITFILE "/Users/ricksarkar/Spring26/CS3220/Labs/lab1/test/part1/test4.mem"
   `define IMEMADDRBITS  16
   `define IMEMWORDBITS  2
   `define IMEMWORDS	  (1 << (`IMEMADDRBITS - `IMEMWORDBITS))
@@ -222,6 +222,4 @@
   `define from_WB_to_MEM_WIDTH (1)
 
 
-
-  
 `endif 

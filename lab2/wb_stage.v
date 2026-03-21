@@ -16,35 +16,27 @@ module WB_STAGE(
   wire [`INSTBITS-1:0] inst_WB; 
   wire [`DBITS-1:0] PC_WB;
   wire [`DBITS-1:0] inst_count_WB; 
-
-
   
-  wire wr_reg_WB; // is this instruction writing into a register file? 
+  wire wr_reg_WB;
   
-  wire [`REGNOBITS-1:0] wregno_WB; // destination register ID 
-  wire [`DBITS-1:0] regval_WB;  // the contents to be written in the register file (or CSR )
+  wire [`REGNOBITS-1:0] wregno_WB; 
+  wire [`DBITS-1:0] regval_WB; 
   
 
   wire [`DBITS-1:0] aluout_WB;
   wire [`DBITS-1:0] rd_val_WB;
-
-  // **TODO: Complete the rest of the pipeline**
- 
     
    assign {                     
-                                valid_WB,
-                                inst_WB,
-                                PC_WB,
-                                op_I_WB,
-                                inst_count_WB,
-                                // more signals might need
-                                rd_val_WB,   
-                                aluout_WB, 
-                                wr_reg_WB,
-                                wregno_WB        
-                                 } = from_MEM_latch; 
-        
-        // write register by sending data to the DE stage 
+  valid_WB,
+  inst_WB,
+  PC_WB,
+  op_I_WB,
+  inst_count_WB,
+  rd_val_WB,   
+  aluout_WB, 
+  wr_reg_WB,
+  wregno_WB        
+  } = from_MEM_latch;
         
 
   assign regval_WB = (op_I_WB == `LW_I) ? rd_val_WB : aluout_WB;
@@ -52,20 +44,17 @@ module WB_STAGE(
 // forward signals to FE stage
 assign from_WB_to_FE = '0;
 
+assign from_WB_to_DE = {wr_reg_WB, wregno_WB, regval_WB} ;  
+
 // forward signals to AGEX stage
 assign from_WB_to_AGEX = '0;
 
 // forward signals to MEM stage
 assign from_WB_to_MEM = '0;
 
-// we send register write (and CSR register) information to DE stage 
-assign from_WB_to_DE = {wr_reg_WB, wregno_WB, regval_WB} ;  
-
-// this code need to be commented out when we synthesize the code later 
-    // special workaround to get tests Pass/Fail status
-    reg [`REGWORDS-1:0][31:0] last_WB_value /* verilator public */;
 
 
+reg [`REGWORDS-1:0][31:0] last_WB_value /* verilator public */;
   always @(negedge clk) begin
   if (reset) begin
       for (int i = 0; i < `REGWORDS; ++i) begin

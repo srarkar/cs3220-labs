@@ -90,12 +90,30 @@ int main(int argc, char** argv, char** env) {
     #endif
         ++timestamp;
     }
+    
+    
 
 #ifdef DPRINTF
     std::cout << "Total instructions=" << std::dec << inst_count_WB << ", cycles=" << (timestamp_WB / 2) << ", IPC=" << ((inst_count_WB * 2.0f) / timestamp_WB) << std::endl; 
 #endif
 
     int exitcode = (int)dut->pipeline->my_WB_stage->last_WB_value[3];
+
+    // double acc = 0.0;
+    // uint32_t total = dut->rootp->pipeline->my_FE_stage->total_branch_predictions;
+    // uint32_t correct = dut->rootp->pipeline->my_FE_stage->correct_branch_predictions;
+    // if (total > 0) {
+    //     acc = (double)correct / (double)total * 100.0;
+    // }
+    // printf("Accuracy=%.2f%%\n", acc);
+    int total = dut->pipeline->my_FE_stage->total_branch_predictions;
+    int correct = dut->pipeline->my_FE_stage->correct_branch_predictions;
+
+    if (total > 0) {
+        double acc = (double)correct / (double)total * 100.0;
+        printf("Accuracy=%.2f%%\n", acc);
+}
+
 
     // Final model cleanup
     dut->final();

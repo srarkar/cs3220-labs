@@ -1,0 +1,429 @@
+
+TESTING: /Users/ricksarkar/Spring26/CS3220/Labs/lab3/test/part6/alutest1.mem
+-- VERILATE ----------------
+/Users/ricksarkar/Spring26/CS3220/Labs/lab3/test/part6/alutest1.mem
+/Users/ricksarkar/Spring26/CS3220/Labs/lab3/define.vh
+sed -i '' 's|define IDMEMINITFILE.*|define IDMEMINITFILE "/Users/ricksarkar/Spring26/CS3220/Labs/lab3/test/part6/alutest1.mem"|g'  /Users/ricksarkar/Spring26/CS3220/Labs/lab3/define.vh
+verilator --exe -cc pipeline.v --top-module pipeline --trace --trace-structs --assert -Wpedantic -Wno-DECLFILENAME -Wno-UNUSED --x-initial unique --x-assign unique sim_main.cpp fe_stage.v de_stage.v mem_stage.v wb_stage.v agex_stage.v divider.v external_alu_wrapper.v FU_stage.v multiplier.v -CFLAGS '-DIDMEMINITFILE=/Users/ricksarkar/Spring26/CS3220/Labs/lab3/test/part6/alutest1.mem -DVCD_OUTPUT -DDPRINTF'
+- V e r i l a t i o n   R e p o r t: Verilator 5.044 2026-01-01 rev vUNKNOWN-built20260101
+- Verilator: Built from 0.492 MB sources in 11 modules, into 0.626 MB in 16 C++ files needing 0.001 MB
+- Verilator: Walltime 0.061 s (elab=0.005, cvt=0.037, bld=0.000); cpu 0.060 s on 1 threads; alloced 19.109 MB
+-- COMPILE -----------------
+/Library/Developer/CommandLineTools/usr/bin/make -j 4 -C obj_dir -f Vpipeline.mk
+c++  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.044/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.044/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=1 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=1 -DVM_TRACE_SAIF=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension    -DIDMEMINITFILE=/Users/ricksarkar/Spring26/CS3220/Labs/lab3/test/part6/alutest1.mem -DVCD_OUTPUT -DDPRINTF   -Os  -c -o sim_main.o ../sim_main.cpp
+c++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.044/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.044/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=1 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=1 -DVM_TRACE_SAIF=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension    -DIDMEMINITFILE=/Users/ricksarkar/Spring26/CS3220/Labs/lab3/test/part6/alutest1.mem -DVCD_OUTPUT -DDPRINTF   -c -o verilated.o /opt/homebrew/Cellar/verilator/5.044/share/verilator/include/verilated.cpp
+c++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.044/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.044/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=1 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=1 -DVM_TRACE_SAIF=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension    -DIDMEMINITFILE=/Users/ricksarkar/Spring26/CS3220/Labs/lab3/test/part6/alutest1.mem -DVCD_OUTPUT -DDPRINTF   -c -o verilated_dpi.o /opt/homebrew/Cellar/verilator/5.044/share/verilator/include/verilated_dpi.cpp
+c++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.044/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.044/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=1 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=1 -DVM_TRACE_SAIF=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension    -DIDMEMINITFILE=/Users/ricksarkar/Spring26/CS3220/Labs/lab3/test/part6/alutest1.mem -DVCD_OUTPUT -DDPRINTF   -c -o verilated_vcd_c.o /opt/homebrew/Cellar/verilator/5.044/share/verilator/include/verilated_vcd_c.cpp
+c++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.044/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.044/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=1 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=1 -DVM_TRACE_SAIF=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension    -DIDMEMINITFILE=/Users/ricksarkar/Spring26/CS3220/Labs/lab3/test/part6/alutest1.mem -DVCD_OUTPUT -DDPRINTF   -c -o verilated_threads.o /opt/homebrew/Cellar/verilator/5.044/share/verilator/include/verilated_threads.cpp
+python3 /opt/homebrew/Cellar/verilator/5.044/share/verilator/bin/verilator_includer -DVL_INCLUDE_OPT=include Vpipeline.cpp Vpipeline___024root__0.cpp Vpipeline_pipeline__0.cpp Vpipeline_WB_STAGE__0.cpp Vpipeline__Dpi.cpp Vpipeline__Trace__0.cpp Vpipeline__ConstPool__0__Slow.cpp Vpipeline___024root__Slow.cpp Vpipeline___024root__0__Slow.cpp Vpipeline_pipeline__Slow.cpp Vpipeline_pipeline__0__Slow.cpp Vpipeline_WB_STAGE__Slow.cpp Vpipeline_WB_STAGE__0__Slow.cpp Vpipeline__Syms__Slow.cpp Vpipeline__Trace__0__Slow.cpp Vpipeline__TraceDecls__0__Slow.cpp > Vpipeline__ALL.cpp
+c++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.044/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.044/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=1 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=1 -DVM_TRACE_SAIF=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension    -DIDMEMINITFILE=/Users/ricksarkar/Spring26/CS3220/Labs/lab3/test/part6/alutest1.mem -DVCD_OUTPUT -DDPRINTF   -c -o Vpipeline__ALL.o Vpipeline__ALL.cpp
+c++  -Wl,-U,__Z15vl_time_stamp64v,-U,__Z13sc_time_stampv   sim_main.o verilated.o verilated_dpi.o verilated_vcd_c.o verilated_threads.o Vpipeline__ALL.a    -pthread -lpthread   -o Vpipeline
+-- RUN ---------------------
+obj_dir/Vpipeline
+[28]  PC=0x200 Inst=0x93 Op=12 wr_reg=1 wregno=1 regval=0
+[32]  PC=0x204 Inst=0x113 Op=12 wr_reg=1 wregno=2 regval=0
+[36]  PC=0x208 Inst=0x193 Op=12 wr_reg=1 wregno=3 regval=0
+[40]  PC=0x20c Inst=0x213 Op=12 wr_reg=1 wregno=4 regval=0
+[44]  PC=0x210 Inst=0x293 Op=12 wr_reg=1 wregno=5 regval=0
+[48]  PC=0x214 Inst=0x313 Op=12 wr_reg=1 wregno=6 regval=0
+[52]  PC=0x218 Inst=0x393 Op=12 wr_reg=1 wregno=7 regval=0
+[56]  PC=0x21c Inst=0x413 Op=12 wr_reg=1 wregno=8 regval=0
+[60]  PC=0x220 Inst=0x493 Op=12 wr_reg=1 wregno=9 regval=0
+[64]  PC=0x224 Inst=0x513 Op=12 wr_reg=1 wregno=10 regval=0
+[68]  PC=0x228 Inst=0x593 Op=12 wr_reg=1 wregno=11 regval=0
+[72]  PC=0x22c Inst=0x613 Op=12 wr_reg=1 wregno=12 regval=0
+[76]  PC=0x230 Inst=0x693 Op=12 wr_reg=1 wregno=13 regval=0
+[80]  PC=0x234 Inst=0x713 Op=12 wr_reg=1 wregno=14 regval=0
+[84]  PC=0x238 Inst=0x793 Op=12 wr_reg=1 wregno=15 regval=0
+[88]  PC=0x23c Inst=0x813 Op=12 wr_reg=1 wregno=16 regval=0
+[92]  PC=0x240 Inst=0x893 Op=12 wr_reg=1 wregno=17 regval=0
+[96]  PC=0x244 Inst=0x913 Op=12 wr_reg=1 wregno=18 regval=0
+[100]  PC=0x248 Inst=0x993 Op=12 wr_reg=1 wregno=19 regval=0
+[104]  PC=0x24c Inst=0xa13 Op=12 wr_reg=1 wregno=20 regval=0
+[108]  PC=0x250 Inst=0xa93 Op=12 wr_reg=1 wregno=21 regval=0
+[112]  PC=0x254 Inst=0xb13 Op=12 wr_reg=1 wregno=22 regval=0
+[116]  PC=0x258 Inst=0xb93 Op=12 wr_reg=1 wregno=23 regval=0
+[120]  PC=0x25c Inst=0xc13 Op=12 wr_reg=1 wregno=24 regval=0
+[124]  PC=0x260 Inst=0xc93 Op=12 wr_reg=1 wregno=25 regval=0
+[128]  PC=0x264 Inst=0xd13 Op=12 wr_reg=1 wregno=26 regval=0
+[132]  PC=0x268 Inst=0xd93 Op=12 wr_reg=1 wregno=27 regval=0
+[136]  PC=0x26c Inst=0xe13 Op=12 wr_reg=1 wregno=28 regval=0
+[140]  PC=0x270 Inst=0xe93 Op=12 wr_reg=1 wregno=29 regval=0
+[144]  PC=0x274 Inst=0xf13 Op=12 wr_reg=1 wregno=30 regval=0
+[148]  PC=0x278 Inst=0xf93 Op=12 wr_reg=1 wregno=31 regval=0
+[152]  PC=0x27c Inst=0x59800513 Op=12 wr_reg=1 wregno=10 regval=1432
+[156]  PC=0x280 Inst=0x59000093 Op=12 wr_reg=1 wregno=1 regval=1424
+[160]  PC=0x284 Inst=0x59400493 Op=12 wr_reg=1 wregno=9 regval=1428
+[164]  PC=0x288 Inst=0x59c00593 Op=12 wr_reg=1 wregno=11 regval=1436
+[168]  PC=0x28c Inst=0x52e83 Op=23 wr_reg=1 wregno=29 regval=1
+[172]  PC=0x290 Inst=0xaf03 Op=23 wr_reg=1 wregno=30 regval=1069547520
+[196]  PC=0x294 Inst=0x4af83 Op=23 wr_reg=1 wregno=31 regval=1069547520
+[200]  PC=0x298 Inst=0x13 Op=12
+[204]  PC=0x29c Inst=0x13 Op=12
+[208]  PC=0x2a0 Inst=0x13 Op=12
+[212]  PC=0x2a4 Inst=0x13 Op=12
+[216]  PC=0x2a8 Inst=0x13 Op=12
+[220]  PC=0x2ac Inst=0x13 Op=12
+[224]  PC=0x2b0 Inst=0x13 Op=12
+[228]  PC=0x2b4 Inst=0x13 Op=12
+[232]  PC=0x2b8 Inst=0x13 Op=12
+[236]  PC=0x2bc Inst=0x13 Op=12
+[240]  PC=0x2c0 Inst=0x13 Op=12
+[244]  PC=0x2c4 Inst=0x13 Op=12
+[248]  PC=0x2c8 Inst=0x13 Op=12
+[252]  PC=0x2cc Inst=0x13 Op=12
+[256]  PC=0x2d0 Inst=0x13 Op=12
+[260]  PC=0x2d4 Inst=0x13 Op=12
+[264]  PC=0x2d8 Inst=0x13 Op=12
+[268]  PC=0x2dc Inst=0x13 Op=12
+[272]  PC=0x2e0 Inst=0x13 Op=12
+[276]  PC=0x2e4 Inst=0x13 Op=12
+[280]  PC=0x2e8 Inst=0x13 Op=12
+[284]  PC=0x2ec Inst=0x13 Op=12
+[288]  PC=0x2f0 Inst=0x13 Op=12
+[292]  PC=0x2f4 Inst=0x13 Op=12
+[296]  PC=0x2f8 Inst=0x13 Op=12
+[300]  PC=0x2fc Inst=0x13 Op=12
+[304]  PC=0x300 Inst=0x13 Op=12
+[308]  PC=0x304 Inst=0x13 Op=12
+[312]  PC=0x308 Inst=0x13 Op=12
+[316]  PC=0x30c Inst=0x13 Op=12
+[320]  PC=0x310 Inst=0x13 Op=12
+[324]  PC=0x314 Inst=0x13 Op=12
+[328]  PC=0x318 Inst=0x13 Op=12
+[332]  PC=0x31c Inst=0x13 Op=12
+[336]  PC=0x320 Inst=0x13 Op=12
+[340]  PC=0x324 Inst=0x13 Op=12
+[344]  PC=0x328 Inst=0x13 Op=12
+[348]  PC=0x32c Inst=0x13 Op=12
+[352]  PC=0x330 Inst=0x13 Op=12
+[356]  PC=0x334 Inst=0x13 Op=12
+[360]  PC=0x338 Inst=0x13 Op=12
+[364]  PC=0x33c Inst=0x13 Op=12
+[368]  PC=0x340 Inst=0x13 Op=12
+[372]  PC=0x344 Inst=0x13 Op=12
+[376]  PC=0x348 Inst=0x13 Op=12
+[380]  PC=0x34c Inst=0x13 Op=12
+[384]  PC=0x350 Inst=0x13 Op=12
+[388]  PC=0x354 Inst=0x13 Op=12
+[392]  PC=0x358 Inst=0x13 Op=12
+[396]  PC=0x35c Inst=0x13 Op=12
+[400]  PC=0x360 Inst=0x13 Op=12
+[404]  PC=0x364 Inst=0x13 Op=12
+[408]  PC=0x368 Inst=0x13 Op=12
+[412]  PC=0x36c Inst=0x13 Op=12
+[416]  PC=0x370 Inst=0x13 Op=12
+[420]  PC=0x374 Inst=0x13 Op=12
+[424]  PC=0x378 Inst=0x13 Op=12
+[428]  PC=0x37c Inst=0x13 Op=12
+[432]  PC=0x380 Inst=0x13 Op=12
+[436]  PC=0x384 Inst=0x13 Op=12
+[440]  PC=0x388 Inst=0x13 Op=12
+[444]  PC=0x38c Inst=0x13 Op=12
+[448]  PC=0x390 Inst=0x13 Op=12
+[452]  PC=0x394 Inst=0x13 Op=12
+[456]  PC=0x398 Inst=0x13 Op=12
+[460]  PC=0x39c Inst=0x13 Op=12
+[464]  PC=0x3a0 Inst=0x13 Op=12
+[468]  PC=0x3a4 Inst=0x13 Op=12
+[472]  PC=0x3a8 Inst=0x13 Op=12
+[476]  PC=0x3ac Inst=0x13 Op=12
+[480]  PC=0x3b0 Inst=0x13 Op=12
+[484]  PC=0x3b4 Inst=0x13 Op=12
+[488]  PC=0x3b8 Inst=0x13 Op=12
+[492]  PC=0x3bc Inst=0x13 Op=12
+[496]  PC=0x3c0 Inst=0x13 Op=12
+[500]  PC=0x3c4 Inst=0x13 Op=12
+[504]  PC=0x3c8 Inst=0x13 Op=12
+[508]  PC=0x3cc Inst=0x13 Op=12
+[512]  PC=0x3d0 Inst=0x13 Op=12
+[516]  PC=0x3d4 Inst=0x13 Op=12
+[520]  PC=0x3d8 Inst=0x13 Op=12
+[524]  PC=0x3dc Inst=0x13 Op=12
+[528]  PC=0x3e0 Inst=0x13 Op=12
+[532]  PC=0x3e4 Inst=0x13 Op=12
+[536]  PC=0x3e8 Inst=0x13 Op=12
+[540]  PC=0x3ec Inst=0x13 Op=12
+[544]  PC=0x3f0 Inst=0x13 Op=12
+[548]  PC=0x3f4 Inst=0x13 Op=12
+[552]  PC=0x3f8 Inst=0x13 Op=12
+[556]  PC=0x3fc Inst=0x13 Op=12
+[560]  PC=0x400 Inst=0x13 Op=12
+[564]  PC=0x404 Inst=0x13 Op=12
+[568]  PC=0x408 Inst=0x13 Op=12
+[572]  PC=0x40c Inst=0x13 Op=12
+[576]  PC=0x410 Inst=0x13 Op=12
+[580]  PC=0x414 Inst=0x13 Op=12
+[584]  PC=0x418 Inst=0x13 Op=12
+[588]  PC=0x41c Inst=0x13 Op=12
+[592]  PC=0x420 Inst=0x13 Op=12
+[596]  PC=0x424 Inst=0x13 Op=12
+[600]  PC=0x428 Inst=0x13 Op=12
+[604]  PC=0x42c Inst=0x13 Op=12
+[608]  PC=0x430 Inst=0x13 Op=12
+[612]  PC=0x434 Inst=0x13 Op=12
+[616]  PC=0x438 Inst=0x13 Op=12
+[620]  PC=0x43c Inst=0x13 Op=12
+[624]  PC=0x440 Inst=0x13 Op=12
+[628]  PC=0x444 Inst=0x13 Op=12
+[632]  PC=0x448 Inst=0x13 Op=12
+[636]  PC=0x44c Inst=0x13 Op=12
+[640]  PC=0x450 Inst=0x13 Op=12
+[644]  PC=0x454 Inst=0x13 Op=12
+[648]  PC=0x458 Inst=0x13 Op=12
+[652]  PC=0x45c Inst=0x13 Op=12
+[656]  PC=0x460 Inst=0x13 Op=12
+[660]  PC=0x464 Inst=0x13 Op=12
+[664]  PC=0x468 Inst=0x1b5a023 Op=24
+[668]  PC=0x46c Inst=0x5a703 Op=23 wr_reg=1 wregno=14 regval=1065353216
+[672]  PC=0x470 Inst=0x3f8003b7 Op=21 wr_reg=1 wregno=7 regval=1065353216
+[676]  PC=0x474 Inst=0x300193 Op=12 wr_reg=1 wregno=3 regval=3
+[688]  PC=0x478 Inst=0x6771e63 Op=29
+[692]  PC=0x47c Inst=0x5a800513 Op=12 wr_reg=1 wregno=10 regval=1448
+[696]  PC=0x480 Inst=0x5a000093 Op=12 wr_reg=1 wregno=1 regval=1440
+[700]  PC=0x484 Inst=0x5a400493 Op=12 wr_reg=1 wregno=9 regval=1444
+[704]  PC=0x488 Inst=0x5ac00593 Op=12 wr_reg=1 wregno=11 regval=1452
+[708]  PC=0x48c Inst=0x52e83 Op=23 wr_reg=1 wregno=29 regval=2
+[712]  PC=0x490 Inst=0xaf03 Op=23 wr_reg=1 wregno=30 regval=1075838976
+[736]  PC=0x494 Inst=0x4af83 Op=23 wr_reg=1 wregno=31 regval=1075838976
+[740]  PC=0x498 Inst=0x13 Op=12
+[744]  PC=0x49c Inst=0x13 Op=12
+[748]  PC=0x4a0 Inst=0x13 Op=12
+[752]  PC=0x4a4 Inst=0x13 Op=12
+[756]  PC=0x4a8 Inst=0x13 Op=12
+[760]  PC=0x4ac Inst=0x13 Op=12
+[764]  PC=0x4b0 Inst=0x13 Op=12
+[768]  PC=0x4b4 Inst=0x13 Op=12
+[772]  PC=0x4b8 Inst=0x13 Op=12
+[776]  PC=0x4bc Inst=0x13 Op=12
+[780]  PC=0x4c0 Inst=0x13 Op=12
+[784]  PC=0x4c4 Inst=0x13 Op=12
+[788]  PC=0x4c8 Inst=0x13 Op=12
+[792]  PC=0x4cc Inst=0x13 Op=12
+[796]  PC=0x4d0 Inst=0x13 Op=12
+[800]  PC=0x4d4 Inst=0x13 Op=12
+[804]  PC=0x4d8 Inst=0x13 Op=12
+[808]  PC=0x4dc Inst=0x1b5a023 Op=24
+[812]  PC=0x4e0 Inst=0x5a703 Op=23 wr_reg=1 wregno=14 regval=1086849024
+[816]  PC=0x4e4 Inst=0x40c803b7 Op=21 wr_reg=1 wregno=7 regval=1086849024
+[820]  PC=0x4e8 Inst=0x400193 Op=12 wr_reg=1 wregno=3 regval=4
+[832]  PC=0x4ec Inst=0x771463 Op=29
+[836]  PC=0x4f0 Inst=0x301e63 Op=29
+[848]  PC=0x50c Inst=0x100193 Op=12 wr_reg=1 wregno=3 regval=1
+[852]  PC=0x510 Inst=0x13 Op=12
+[856]  PC=0x514 Inst=0x13 Op=12
+[860]  PC=0x518 Inst=0x13 Op=12
+[864]  PC=0x51c Inst=0x13 Op=12
+[868]  PC=0x520 Inst=0x13 Op=12
+[872]  PC=0x524 Inst=0x13 Op=12
+[980]  PC=0x590 Inst=0x3fc00000 Op=37
+[984]  PC=0x594 Inst=0x3fc00000 Op=37
+[988]  PC=0x598 Inst=0x1 Op=37
+[996]  PC=0x5a0 Inst=0x40200000 Op=37
+[1000]  PC=0x5a4 Inst=0x40200000 Op=37
+[1004]  PC=0x5a8 Inst=0x2 Op=37
+[65604]  PC=0x10200 Inst=0x93 Op=12 wr_reg=1 wregno=1 regval=0
+[65608]  PC=0x10204 Inst=0x113 Op=12 wr_reg=1 wregno=2 regval=0
+[65612]  PC=0x10208 Inst=0x193 Op=12 wr_reg=1 wregno=3 regval=0
+[65616]  PC=0x1020c Inst=0x213 Op=12 wr_reg=1 wregno=4 regval=0
+[65620]  PC=0x10210 Inst=0x293 Op=12 wr_reg=1 wregno=5 regval=0
+[65624]  PC=0x10214 Inst=0x313 Op=12 wr_reg=1 wregno=6 regval=0
+[65628]  PC=0x10218 Inst=0x393 Op=12 wr_reg=1 wregno=7 regval=0
+[65632]  PC=0x1021c Inst=0x413 Op=12 wr_reg=1 wregno=8 regval=0
+[65636]  PC=0x10220 Inst=0x493 Op=12 wr_reg=1 wregno=9 regval=0
+[65640]  PC=0x10224 Inst=0x513 Op=12 wr_reg=1 wregno=10 regval=0
+[65644]  PC=0x10228 Inst=0x593 Op=12 wr_reg=1 wregno=11 regval=0
+[65648]  PC=0x1022c Inst=0x613 Op=12 wr_reg=1 wregno=12 regval=0
+[65652]  PC=0x10230 Inst=0x693 Op=12 wr_reg=1 wregno=13 regval=0
+[65656]  PC=0x10234 Inst=0x713 Op=12 wr_reg=1 wregno=14 regval=0
+[65660]  PC=0x10238 Inst=0x793 Op=12 wr_reg=1 wregno=15 regval=0
+[65664]  PC=0x1023c Inst=0x813 Op=12 wr_reg=1 wregno=16 regval=0
+[65668]  PC=0x10240 Inst=0x893 Op=12 wr_reg=1 wregno=17 regval=0
+[65672]  PC=0x10244 Inst=0x913 Op=12 wr_reg=1 wregno=18 regval=0
+[65676]  PC=0x10248 Inst=0x993 Op=12 wr_reg=1 wregno=19 regval=0
+[65680]  PC=0x1024c Inst=0xa13 Op=12 wr_reg=1 wregno=20 regval=0
+[65684]  PC=0x10250 Inst=0xa93 Op=12 wr_reg=1 wregno=21 regval=0
+[65688]  PC=0x10254 Inst=0xb13 Op=12 wr_reg=1 wregno=22 regval=0
+[65692]  PC=0x10258 Inst=0xb93 Op=12 wr_reg=1 wregno=23 regval=0
+[65696]  PC=0x1025c Inst=0xc13 Op=12 wr_reg=1 wregno=24 regval=0
+[65700]  PC=0x10260 Inst=0xc93 Op=12 wr_reg=1 wregno=25 regval=0
+[65704]  PC=0x10264 Inst=0xd13 Op=12 wr_reg=1 wregno=26 regval=0
+[65708]  PC=0x10268 Inst=0xd93 Op=12 wr_reg=1 wregno=27 regval=0
+[65712]  PC=0x1026c Inst=0xe13 Op=12 wr_reg=1 wregno=28 regval=0
+[65716]  PC=0x10270 Inst=0xe93 Op=12 wr_reg=1 wregno=29 regval=0
+[65720]  PC=0x10274 Inst=0xf13 Op=12 wr_reg=1 wregno=30 regval=0
+[65724]  PC=0x10278 Inst=0xf93 Op=12 wr_reg=1 wregno=31 regval=0
+[65728]  PC=0x1027c Inst=0x59800513 Op=12 wr_reg=1 wregno=10 regval=1432
+[65732]  PC=0x10280 Inst=0x59000093 Op=12 wr_reg=1 wregno=1 regval=1424
+[65736]  PC=0x10284 Inst=0x59400493 Op=12 wr_reg=1 wregno=9 regval=1428
+[65740]  PC=0x10288 Inst=0x59c00593 Op=12 wr_reg=1 wregno=11 regval=1436
+[65744]  PC=0x1028c Inst=0x52e83 Op=23 wr_reg=1 wregno=29 regval=1
+[65748]  PC=0x10290 Inst=0xaf03 Op=23 wr_reg=1 wregno=30 regval=1069547520
+[65772]  PC=0x10294 Inst=0x4af83 Op=23 wr_reg=1 wregno=31 regval=1069547520
+[65776]  PC=0x10298 Inst=0x13 Op=12
+[65780]  PC=0x1029c Inst=0x13 Op=12
+[65784]  PC=0x102a0 Inst=0x13 Op=12
+[65788]  PC=0x102a4 Inst=0x13 Op=12
+[65792]  PC=0x102a8 Inst=0x13 Op=12
+[65796]  PC=0x102ac Inst=0x13 Op=12
+[65800]  PC=0x102b0 Inst=0x13 Op=12
+[65804]  PC=0x102b4 Inst=0x13 Op=12
+[65808]  PC=0x102b8 Inst=0x13 Op=12
+[65812]  PC=0x102bc Inst=0x13 Op=12
+[65816]  PC=0x102c0 Inst=0x13 Op=12
+[65820]  PC=0x102c4 Inst=0x13 Op=12
+[65824]  PC=0x102c8 Inst=0x13 Op=12
+[65828]  PC=0x102cc Inst=0x13 Op=12
+[65832]  PC=0x102d0 Inst=0x13 Op=12
+[65836]  PC=0x102d4 Inst=0x13 Op=12
+[65840]  PC=0x102d8 Inst=0x13 Op=12
+[65844]  PC=0x102dc Inst=0x13 Op=12
+[65848]  PC=0x102e0 Inst=0x13 Op=12
+[65852]  PC=0x102e4 Inst=0x13 Op=12
+[65856]  PC=0x102e8 Inst=0x13 Op=12
+[65860]  PC=0x102ec Inst=0x13 Op=12
+[65864]  PC=0x102f0 Inst=0x13 Op=12
+[65868]  PC=0x102f4 Inst=0x13 Op=12
+[65872]  PC=0x102f8 Inst=0x13 Op=12
+[65876]  PC=0x102fc Inst=0x13 Op=12
+[65880]  PC=0x10300 Inst=0x13 Op=12
+[65884]  PC=0x10304 Inst=0x13 Op=12
+[65888]  PC=0x10308 Inst=0x13 Op=12
+[65892]  PC=0x1030c Inst=0x13 Op=12
+[65896]  PC=0x10310 Inst=0x13 Op=12
+[65900]  PC=0x10314 Inst=0x13 Op=12
+[65904]  PC=0x10318 Inst=0x13 Op=12
+[65908]  PC=0x1031c Inst=0x13 Op=12
+[65912]  PC=0x10320 Inst=0x13 Op=12
+[65916]  PC=0x10324 Inst=0x13 Op=12
+[65920]  PC=0x10328 Inst=0x13 Op=12
+[65924]  PC=0x1032c Inst=0x13 Op=12
+[65928]  PC=0x10330 Inst=0x13 Op=12
+[65932]  PC=0x10334 Inst=0x13 Op=12
+[65936]  PC=0x10338 Inst=0x13 Op=12
+[65940]  PC=0x1033c Inst=0x13 Op=12
+[65944]  PC=0x10340 Inst=0x13 Op=12
+[65948]  PC=0x10344 Inst=0x13 Op=12
+[65952]  PC=0x10348 Inst=0x13 Op=12
+[65956]  PC=0x1034c Inst=0x13 Op=12
+[65960]  PC=0x10350 Inst=0x13 Op=12
+[65964]  PC=0x10354 Inst=0x13 Op=12
+[65968]  PC=0x10358 Inst=0x13 Op=12
+[65972]  PC=0x1035c Inst=0x13 Op=12
+[65976]  PC=0x10360 Inst=0x13 Op=12
+[65980]  PC=0x10364 Inst=0x13 Op=12
+[65984]  PC=0x10368 Inst=0x13 Op=12
+[65988]  PC=0x1036c Inst=0x13 Op=12
+[65992]  PC=0x10370 Inst=0x13 Op=12
+[65996]  PC=0x10374 Inst=0x13 Op=12
+[66000]  PC=0x10378 Inst=0x13 Op=12
+[66004]  PC=0x1037c Inst=0x13 Op=12
+[66008]  PC=0x10380 Inst=0x13 Op=12
+[66012]  PC=0x10384 Inst=0x13 Op=12
+[66016]  PC=0x10388 Inst=0x13 Op=12
+[66020]  PC=0x1038c Inst=0x13 Op=12
+[66024]  PC=0x10390 Inst=0x13 Op=12
+[66028]  PC=0x10394 Inst=0x13 Op=12
+[66032]  PC=0x10398 Inst=0x13 Op=12
+[66036]  PC=0x1039c Inst=0x13 Op=12
+[66040]  PC=0x103a0 Inst=0x13 Op=12
+[66044]  PC=0x103a4 Inst=0x13 Op=12
+[66048]  PC=0x103a8 Inst=0x13 Op=12
+[66052]  PC=0x103ac Inst=0x13 Op=12
+[66056]  PC=0x103b0 Inst=0x13 Op=12
+[66060]  PC=0x103b4 Inst=0x13 Op=12
+[66064]  PC=0x103b8 Inst=0x13 Op=12
+[66068]  PC=0x103bc Inst=0x13 Op=12
+[66072]  PC=0x103c0 Inst=0x13 Op=12
+[66076]  PC=0x103c4 Inst=0x13 Op=12
+[66080]  PC=0x103c8 Inst=0x13 Op=12
+[66084]  PC=0x103cc Inst=0x13 Op=12
+[66088]  PC=0x103d0 Inst=0x13 Op=12
+[66092]  PC=0x103d4 Inst=0x13 Op=12
+[66096]  PC=0x103d8 Inst=0x13 Op=12
+[66100]  PC=0x103dc Inst=0x13 Op=12
+[66104]  PC=0x103e0 Inst=0x13 Op=12
+[66108]  PC=0x103e4 Inst=0x13 Op=12
+[66112]  PC=0x103e8 Inst=0x13 Op=12
+[66116]  PC=0x103ec Inst=0x13 Op=12
+[66120]  PC=0x103f0 Inst=0x13 Op=12
+[66124]  PC=0x103f4 Inst=0x13 Op=12
+[66128]  PC=0x103f8 Inst=0x13 Op=12
+[66132]  PC=0x103fc Inst=0x13 Op=12
+[66136]  PC=0x10400 Inst=0x13 Op=12
+[66140]  PC=0x10404 Inst=0x13 Op=12
+[66144]  PC=0x10408 Inst=0x13 Op=12
+[66148]  PC=0x1040c Inst=0x13 Op=12
+[66152]  PC=0x10410 Inst=0x13 Op=12
+[66156]  PC=0x10414 Inst=0x13 Op=12
+[66160]  PC=0x10418 Inst=0x13 Op=12
+[66164]  PC=0x1041c Inst=0x13 Op=12
+[66168]  PC=0x10420 Inst=0x13 Op=12
+[66172]  PC=0x10424 Inst=0x13 Op=12
+[66176]  PC=0x10428 Inst=0x13 Op=12
+[66180]  PC=0x1042c Inst=0x13 Op=12
+[66184]  PC=0x10430 Inst=0x13 Op=12
+[66188]  PC=0x10434 Inst=0x13 Op=12
+[66192]  PC=0x10438 Inst=0x13 Op=12
+[66196]  PC=0x1043c Inst=0x13 Op=12
+[66200]  PC=0x10440 Inst=0x13 Op=12
+[66204]  PC=0x10444 Inst=0x13 Op=12
+[66208]  PC=0x10448 Inst=0x13 Op=12
+[66212]  PC=0x1044c Inst=0x13 Op=12
+[66216]  PC=0x10450 Inst=0x13 Op=12
+[66220]  PC=0x10454 Inst=0x13 Op=12
+[66224]  PC=0x10458 Inst=0x13 Op=12
+[66228]  PC=0x1045c Inst=0x13 Op=12
+[66232]  PC=0x10460 Inst=0x13 Op=12
+[66236]  PC=0x10464 Inst=0x13 Op=12
+[66240]  PC=0x10468 Inst=0x1b5a023 Op=24
+[66244]  PC=0x1046c Inst=0x5a703 Op=23 wr_reg=1 wregno=14 regval=1065353216
+[66248]  PC=0x10470 Inst=0x3f8003b7 Op=21 wr_reg=1 wregno=7 regval=1065353216
+[66252]  PC=0x10474 Inst=0x300193 Op=12 wr_reg=1 wregno=3 regval=3
+[66264]  PC=0x10478 Inst=0x6771e63 Op=29
+[66268]  PC=0x1047c Inst=0x5a800513 Op=12 wr_reg=1 wregno=10 regval=1448
+[66272]  PC=0x10480 Inst=0x5a000093 Op=12 wr_reg=1 wregno=1 regval=1440
+[66276]  PC=0x10484 Inst=0x5a400493 Op=12 wr_reg=1 wregno=9 regval=1444
+[66280]  PC=0x10488 Inst=0x5ac00593 Op=12 wr_reg=1 wregno=11 regval=1452
+[66284]  PC=0x1048c Inst=0x52e83 Op=23 wr_reg=1 wregno=29 regval=2
+[66288]  PC=0x10490 Inst=0xaf03 Op=23 wr_reg=1 wregno=30 regval=1075838976
+[66312]  PC=0x10494 Inst=0x4af83 Op=23 wr_reg=1 wregno=31 regval=1075838976
+[66316]  PC=0x10498 Inst=0x13 Op=12
+[66320]  PC=0x1049c Inst=0x13 Op=12
+[66324]  PC=0x104a0 Inst=0x13 Op=12
+[66328]  PC=0x104a4 Inst=0x13 Op=12
+[66332]  PC=0x104a8 Inst=0x13 Op=12
+[66336]  PC=0x104ac Inst=0x13 Op=12
+[66340]  PC=0x104b0 Inst=0x13 Op=12
+[66344]  PC=0x104b4 Inst=0x13 Op=12
+[66348]  PC=0x104b8 Inst=0x13 Op=12
+[66352]  PC=0x104bc Inst=0x13 Op=12
+[66356]  PC=0x104c0 Inst=0x13 Op=12
+[66360]  PC=0x104c4 Inst=0x13 Op=12
+[66364]  PC=0x104c8 Inst=0x13 Op=12
+[66368]  PC=0x104cc Inst=0x13 Op=12
+[66372]  PC=0x104d0 Inst=0x13 Op=12
+[66376]  PC=0x104d4 Inst=0x13 Op=12
+[66380]  PC=0x104d8 Inst=0x13 Op=12
+[66384]  PC=0x104dc Inst=0x1b5a023 Op=24
+[66388]  PC=0x104e0 Inst=0x5a703 Op=23 wr_reg=1 wregno=14 regval=1086849024
+[66392]  PC=0x104e4 Inst=0x40c803b7 Op=21 wr_reg=1 wregno=7 regval=1086849024
+[66396]  PC=0x104e8 Inst=0x400193 Op=12 wr_reg=1 wregno=3 regval=4
+[66408]  PC=0x104ec Inst=0x771463 Op=29
+[66412]  PC=0x104f0 Inst=0x301e63 Op=29
+[66424]  PC=0x1050c Inst=0x100193 Op=12 wr_reg=1 wregno=3 regval=1
+[66428]  PC=0x10510 Inst=0x13 Op=12
+[66432]  PC=0x10514 Inst=0x13 Op=12
+[66436]  PC=0x10518 Inst=0x13 Op=12
+[66440]  PC=0x1051c Inst=0x13 Op=12
+[66444]  PC=0x10520 Inst=0x13 Op=12
+[66448]  PC=0x10524 Inst=0x13 Op=12
+[66556]  PC=0x10590 Inst=0x3fc00000 Op=37
+[66560]  PC=0x10594 Inst=0x3fc00000 Op=37
+[66564]  PC=0x10598 Inst=0x1 Op=37
+[66572]  PC=0x105a0 Inst=0x40200000 Op=37
+[66576]  PC=0x105a4 Inst=0x40200000 Op=37
+[66580]  PC=0x105a8 Inst=0x2 Op=37
+Total instructions=404, cycles=33285, IPC=0.0121376
+Passed!
+-- DONE --------------------

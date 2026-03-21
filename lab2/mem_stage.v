@@ -11,7 +11,6 @@ module MEM_STAGE(
   output wire [`from_WB_to_AGEX_WIDTH-1:0] from_MEM_to_AGEX
 );
 
-  `UNUSED_VAR (from_WB_to_MEM)
   // D-MEM
   (* ram_init_file = `IDMEMINITFILE *)
   reg [`DBITS-1:0] dmem[`DMEMWORDS-1:0];
@@ -21,6 +20,7 @@ module MEM_STAGE(
      $readmemh(`IDMEMINITFILE , dmem);
   end
   
+  //`UNUSED_VAR (from_WB_to_MEM)
   
   reg [`MEM_latch_WIDTH-1:0] MEM_latch; 
   wire valid_MEM;
@@ -32,24 +32,21 @@ module MEM_STAGE(
   wire [`DBITS-1:0] inst_count_MEM; 
   wire [`INSTBITS-1:0] inst_MEM; 
   wire [`DBITS-1:0] PC_MEM;
- 
-
-
-// **TODO: Complete the rest of the pipeline 
   wire rd_mem_MEM;
 
-  wire [`DBITS-1:0] aluout_MEM;  // memory write value 
+  wire [`DBITS-1:0] aluout_MEM; 
   wire [`REGNOBITS-1:0] wregno_MEM;
   wire wr_reg_MEM;
 
-  wire [`DBITS-1:0] memaddr_MEM;  // memory address. need to be computed in AGEX stage and pass through a latch 
-  wire [`DBITS-1:0] rd_val_MEM;  // memory read value 
-  wire [`DBITS-1:0] wr_val_MEM;  // memory write value 
-  wire wr_mem_MEM;  // is this instruction writing a value into memory? 
+  wire [`DBITS-1:0] memaddr_MEM; 
+  wire [`DBITS-1:0] rd_val_MEM;  
+  wire [`DBITS-1:0] wr_val_MEM; 
+  wire wr_mem_MEM; 
   // Read from D-MEM  (read code is completed if there is a correct memaddr_MEM ) 
-  assign rd_val_MEM = dmem[memaddr_MEM[`DMEMADDRBITS-1:`DMEMWORDBITS]];
+  
 
   assign wr_val_MEM = aluout_MEM;
+  assign rd_val_MEM = dmem[memaddr_MEM[`DMEMADDRBITS-1:`DMEMWORDBITS]];
  // Write to D-MEM
   always @ (posedge clk) begin
   if(wr_mem_MEM)
@@ -65,34 +62,32 @@ module MEM_STAGE(
    assign MEM_latch_out = MEM_latch; 
 
    assign {
-                                valid_MEM,
-                                inst_MEM,
-                                PC_MEM,
-                                op_I_MEM,
-                                inst_count_MEM,
-                                 // more signals might need
-                                memaddr_MEM, 
-                                aluout_MEM,
-                                rd_mem_MEM,
-                                wr_mem_MEM,
-                                wr_reg_MEM,
-                                wregno_MEM
-                                 } = from_AGEX_latch;  
+  valid_MEM,
+  inst_MEM,
+  PC_MEM,
+  op_I_MEM,
+  inst_count_MEM,
+  memaddr_MEM, 
+  aluout_MEM,
+  rd_mem_MEM,
+  wr_mem_MEM,
+  wr_reg_MEM,
+  wregno_MEM
+  } = from_AGEX_latch;  
  
 
-   
-   assign MEM_latch_contents = {
-                                valid_MEM,
-                                inst_MEM,
-                                PC_MEM,
-                                op_I_MEM,
-                                inst_count_MEM,
-                                        // more signals might need 
-                                rd_val_MEM, 
-                                aluout_MEM,
-                                wr_reg_MEM,
-                                wregno_MEM                
-   };
+  
+  assign MEM_latch_contents = {
+  valid_MEM,
+  inst_MEM,
+  PC_MEM,
+  op_I_MEM,
+  inst_count_MEM,
+  rd_val_MEM, 
+  aluout_MEM,
+  wr_reg_MEM,
+  wregno_MEM                
+  };
  
 
   always @ (posedge clk) begin

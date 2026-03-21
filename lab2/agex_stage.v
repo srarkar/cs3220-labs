@@ -33,6 +33,7 @@ module AGEX_STAGE(
 
   wire is_br_AGEX;
   wire is_jmp_AGEX;
+  wire brj_AGEX_AGEX;
   wire rd_mem_AGEX;
   wire wr_mem_AGEX;
   wire wr_reg_AGEX;
@@ -45,8 +46,22 @@ module AGEX_STAGE(
   reg [`DBITS-1:0] aluout_AGEX;
   reg [`DBITS-1:0] memaddr_AGEX;
   reg [`DBITS-1:0] br_target_AGEX;
-  wire br_mispred_AGEX;
 
+  wire br_mispred_AGEX;
+  wire br_taken_AGEX;
+  wire[`DBITS-1:0] predicted_FE;
+
+  integer jbr_count, br_count, j_count, brj_AGEX_count;
+
+  // setup
+  initial begin
+    br_count = 0;
+    j_count = 0;
+    jbr_count = 0;
+    brj_AGEX_count = 0;
+  end
+
+ // Calculate branch condition // TODO: complete the code always @ (*) begin case (op_I_AGEX) BEQ_I : br_cond_AGEX = (regval1_AGEX == regval2_AGEX); BNE_I : br_cond_AGEX = (regval1_AGEX != regval2_AGEX); BLT_I : br_cond_AGEX = ($signed(regval1_AGEX) < $signed(regval2_AGEX)); BGE_I : br_cond_AGEX = ($signed(regval1_AGEX) >= $signed(regval2_AGEX)); BLTU_I: br_cond_AGEX = (regval1_AGEX < regval2_AGEX); BGEU_I: br_cond_AGEX = (regval1_AGEX >= regval2_AGEX); default: br_cond_AGEX = 1'b0; endcase end
   
   // Calculate branch condition
   // TODO: complete the code
@@ -61,6 +76,14 @@ module AGEX_STAGE(
     default: br_cond_AGEX = 1'b0;
     endcase
   end
+
+      // always @(*)begin if (op_I_AGEX == JAL_I) 
+      // br_target_AGEX = PC_AGEX + sxt_imm_AGEX; 
+      //   else if (op_I_AGEX == JR_I) br_target_AGEX = regval1_AGEX;
+      //   else if (op_I_AGEX == JALR_I) br_target_AGEX = (regval1_AGEX + sxt_imm_AGEX) & 32'hfffffffe; 
+      //   else if (is_br_AGEX && br_cond_AGEX) br_target_AGEX = PC_AGEX + sxt_imm_AGEX; 
+      //   else br_target_AGEX = pcplus_AGEX; 
+      // end
 
   // Compute ALU operations  (alu out or memory addresses)
   // TODO: complete the code
@@ -92,12 +115,12 @@ module AGEX_STAGE(
     `JALR_I:  aluout_AGEX = pcplus_AGEX;
     `LW_I:    memaddr_AGEX = regval1_AGEX + sxt_imm_AGEX;
     `SW_I: begin 
-      memaddr_AGEX = regval1_AGEX + sxt_imm_AGEX;
       aluout_AGEX = regval2_AGEX; 
+      memaddr_AGEX = regval1_AGEX + sxt_imm_AGEX;
     end
     default: begin 
+      memaddr_AGEX = '0;
       aluout_AGEX  = '0;
-      memaddr_AGEX = '0;		  
     end
     endcase
   end 
@@ -119,42 +142,46 @@ module AGEX_STAGE(
   end
 
   assign br_mispred_AGEX = ((is_br_AGEX || is_jmp_AGEX) 
+                         && (br_target_AGEX != predicted_FE)) ? 1 : 0;
+  assign br_taken_AGEX = ((is_br_AGEX || is_jmp_AGEX) 
                          && (br_target_AGEX != pcplus_AGEX)) ? 1 : 0;
+  
+  // combining branch and jump bits
+  assign brj_AGEX_AGEX = is_br_AGEX || is_jmp_AGEX;
 
     assign  {                     
-                                  valid_AGEX,
-                                  inst_AGEX,
-                                  PC_AGEX,
-                                  pcplus_AGEX,
-                                  op_I_AGEX,
-                                  inst_count_AGEX,
-                                          // more signals might need
-                                  regval1_AGEX,
-                                  regval2_AGEX,
-                                  sxt_imm_AGEX,                                
-                                  is_br_AGEX,
-                                  is_jmp_AGEX,
-                                  rd_mem_AGEX,
-                                  wr_mem_AGEX,
-                                  wr_reg_AGEX,
-                                  wregno_AGEX
-                                  } = from_DE_latch; 
+    valid_AGEX,
+    inst_AGEX,
+    PC_AGEX,
+    pcplus_AGEX,
+    op_I_AGEX,
+    inst_count_AGEX,
+    regval1_AGEX,
+    regval2_AGEX,
+    sxt_imm_AGEX,                                
+    is_br_AGEX,
+    is_jmp_AGEX,
+    rd_mem_AGEX,
+    wr_mem_AGEX,
+    wr_reg_AGEX,
+    wregno_AGEX,
+    predicted_FE
+    } = from_DE_latch; 
     
  
   assign AGEX_latch_contents = {
-                                valid_AGEX,
-                                inst_AGEX,
-                                PC_AGEX,
-                                op_I_AGEX,
-                                inst_count_AGEX,
-                                       // more signals might need
-                                memaddr_AGEX, 
-                                aluout_AGEX,
-                                rd_mem_AGEX,
-                                wr_mem_AGEX,
-                                wr_reg_AGEX,
-                                wregno_AGEX
-                                 }; 
+  valid_AGEX,
+  inst_AGEX,
+  PC_AGEX,
+  op_I_AGEX,
+  inst_count_AGEX,
+  memaddr_AGEX, 
+  aluout_AGEX,
+  rd_mem_AGEX,
+  wr_mem_AGEX,
+  wr_reg_AGEX,
+  wregno_AGEX
+    }; 
  
   always @ (posedge clk ) begin
     if(reset) begin
@@ -166,11 +193,14 @@ module AGEX_STAGE(
         end 
   end
 
-
   // forward signals to FE stage
   assign from_AGEX_to_FE = { 
-    br_mispred_AGEX, 
-    br_target_AGEX
+    br_mispred_AGEX,
+    brj_AGEX_AGEX,
+    br_taken_AGEX, 
+    br_target_AGEX,
+    PC_AGEX,
+    pcplus_AGEX
   };
 
   // forward signals to DE stage
