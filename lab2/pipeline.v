@@ -28,6 +28,8 @@ module pipeline (
 
   wire [`from_WB_to_MEM_WIDTH-1:0] from_WB_to_MEM; 
 
+  wire flush = from_AGEX_to_DE[0];
+
   FE_STAGE my_FE_stage(
     .clk(clk), 
     .reset(reset), 
@@ -90,12 +92,3 @@ module pipeline (
   end
 
 endmodule
-
-
-
-
-
-
-
-
-

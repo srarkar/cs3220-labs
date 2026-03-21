@@ -46,6 +46,11 @@ module DE_STAGE(
   reg [`TYPENOBITS-1:0] type_I_DE;  // instruction format type information for decoding purpose 
   reg [`IMMTYPENOBITS-1:0] type_immediate_DE;  // immediate type information for decodding purpose 
 
+  // Display memory contents with verilator 
+  // always @(posedge clk) begin
+  //   $display("DE - a0: %h", regs[10]);
+  // end
+
   always @(*) begin 
     if ((op_DE == `ADD_OPCODE) && (F3_DE == `ADD_FUNCT3) && (F7_DE == `ADD_FUNCT7))
       op_I_DE = `ADD_I; 
@@ -308,9 +313,11 @@ end
   wire has_data_hazards;
   wire br_mispred_AGEX;
 
+  wire temp;
   // process AGEX forwarding
   assign { 
-    br_mispred_AGEX          
+    br_mispred_AGEX
+    //temp          
   } = from_AGEX_to_DE;
 
   assign has_data_hazards = (use_rs1_DE && in_use_regs[rs1_DE]) 
@@ -332,37 +339,41 @@ end
     end
   end
 
+wire[`DBITS-1:0] predicted_FE;
+
 // decoding the contents of FE latch out. the order should be matched with the fe_stage.v 
-  assign {
-            valid_DE,
-            inst_DE,
-            PC_DE, 
-            pcplus_DE,
-            inst_count_DE 
-            }  = from_FE_latch;  // based on the contents of the latch, you can decode the content 
+assign {
+  valid_DE,
+  inst_DE,
+  PC_DE, 
+  pcplus_DE,
+  inst_count_DE,
+  predicted_FE
+  }  = from_FE_latch;  // based on the contents of the latch, you can decode the content 
 
 
 // assign wire to send the contents of DE latch to other pipeline stages  
   assign DE_latch_out = DE_latch; 
 
    assign DE_latch_contents = {
-                                  valid_DE, 
-                                  inst_DE,
-                                  PC_DE,
-                                  pcplus_DE,
-                                  op_I_DE,
-                                  inst_count_DE,
-                                  // more signals might need
-                                  rs1_val_DE,
-                                  rs2_val_DE,    
-                                  sxt_imm_DE,
-                                  is_br_DE,
-                                  is_jmp_DE,
-                                  rd_mem_DE,
-                                  wr_mem_DE,
-                                  wr_reg_DE,
-                                  rd_DE
-                                  }; 
+    valid_DE, 
+    inst_DE,
+    PC_DE,
+    pcplus_DE,
+    op_I_DE,
+    inst_count_DE,
+    // more signals might need
+    rs1_val_DE,
+    rs2_val_DE,    
+    sxt_imm_DE,
+    is_br_DE,
+    is_jmp_DE,
+    rd_mem_DE,
+    wr_mem_DE,
+    wr_reg_DE,
+    rd_DE,
+    predicted_FE
+  }; 
 
 
 
@@ -417,11 +428,8 @@ always @ (posedge clk) begin // you need to expand this always block
       if (pipeline_stall_DE) 
         DE_latch <= {`DE_latch_WIDTH{1'b0}};
       else
-          DE_latch <= DE_latch_contents;
+        DE_latch <= DE_latch_contents;
      end 
   end
 
-
-
 endmodule
-

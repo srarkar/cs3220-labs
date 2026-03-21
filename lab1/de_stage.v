@@ -197,14 +197,18 @@ always @(*) begin
   case (type_immediate_DE )  
   `I_immediate: sxt_imm_DE = {{21{inst_DE[31]}}, inst_DE[30:25], inst_DE[24:21], inst_DE[20]};
    `B_immediate: sxt_imm_DE = {{20{inst_DE[31]}}, inst_DE[7], inst_DE[30:25], inst_DE[11:8], 1'b0};
-    /*
   `S_immediate: 
-     sxt_imm_DE =  ... 
+     sxt_imm_DE =  {{20{inst_DE[31]}}, inst_DE[31:25], inst_DE[11:7]};
    `U_immediate: 
-     sxt_imm_DE = ... 
+     sxt_imm_DE = {inst_DE[31:12], 12'b0};
    `J_immediate: 
-    sxt_imm_DE = ... 
-    */ 
+    sxt_imm_DE = {{11{inst_DE[31]}},   // sign bits
+                inst_DE[31],         // imm[20]
+                inst_DE[19:12],      // imm[19:12]
+                inst_DE[20],         // imm[11]
+                inst_DE[30:21],      // imm[10:1]
+                1'b0};               // shift left by 1
+    
    default:
     sxt_imm_DE = 32'b0; 
   endcase  
@@ -230,11 +234,14 @@ end
   assign rs1_val_DE = regs[rs1_DE];
   assign rs2_val_DE = regs[rs2_DE];
 
+  // all branch insturctions
+  assign is_br_DE = 
+  (op_I_DE == `BEQ_I)  || (op_I_DE == `BNE_I)  || (op_I_DE == `BLT_I)  ||
+  (op_I_DE == `BGE_I)  || (op_I_DE == `BLTU_I) || (op_I_DE == `BGEU_I);
 
-  assign is_br_DE  = ((op_I_DE == `BEQ_I) || (op_I_DE == `BNE_I))? 1 : 0;
-  assign wr_reg_DE = ((op_I_DE == `ADD_I) || 
-                      (op_I_DE == `ADDI_I) || 
-                      (op_I_DE == `ANDI_I)) ? ((rd_DE != 0) ? 1 : 0): 0; 
+  assign wr_reg_DE =
+      (rd_DE != 0) &&
+      !(op_I_DE == `BEQ_I  || op_I_DE == `BNE_I  || op_I_DE == `BLT_I  || op_I_DE == `BGE_I  || op_I_DE == `BLTU_I || op_I_DE == `BGEU_I || op_I_DE == `SW_I);
 
  /* this signal is passed from WB stage */ 
   wire wr_reg_WB; // is this instruction writing into a register file? 
