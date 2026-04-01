@@ -1,7 +1,7 @@
 from pynq import Overlay
 
 # change to the path where you save the bistream
-overlay = Overlay('./riscv.bit')
+overlay = Overlay('./riscv_p2.bit')
 
 comm_ip = overlay.comm_0
 # Dispatch Instructions
