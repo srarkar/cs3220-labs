@@ -14,110 +14,70 @@ module ctrl #(
     output [COLS-1:0] stream_out_rdy
 );
 
-    //TODO: Signal declarations
+    // Signal declarations
     localparam MULTIPLIER_DELAY_SLOTS = (MULT_LAT < 1 ? 2 : MULT_LAT + 1);
     wire comparator_out;
 
-    // 1st mac accumulator rst delay 
-    // the pass from comparator to rst_accumulator_reg_0 is 1 clock cycle
+    // rst accumulator delay line (multiplier latency + 1 cycle)
     reg [MULTIPLIER_DELAY_SLOTS-1:0] rst_accumulator_reg_0;
+    // horizontal propagation for columns 1 to COLS-1
     reg [COLS-2:0] rst_accumulator_reg_1_to_rest;
 
+    // stream_out_rdy delay line (full latency through mult + add + accumulation chain)
+    reg [MULT_LAT+ACC_LAT+COLS-1:0] stream_out_rdy_delay;
 
-    //TODO: Rst and stream out rdy signal propagation and synchronization logic among different MAC units
-    // - should all MAC units have the same signal (exactly synced) for rst and stream out rdy? Clearly not, why? How should they differ from each other? 
+    // output register for broadcasted stream_out_rdy
+    reg [COLS-1:0] stream_out_rdy_reg;
 
-    // making sure full array cycles is went through for the 1st run after reset
-    // this is very specific to sync with the test bench
+    // comparator for rst_accumulator trigger (directly from input, tuned for testbench sync)
     assign comparator_out = input_rst_accumulator;
 
-    // rst accumulator logic
-    // Triggers reset for the accumulators in the first column, going downwards by row
+    // rst accumulator logic - single shift register for column 0 (avoids multiple drivers)
     always @(posedge clk) begin
         if (rst) begin
-            rst_accumulator_reg_0 <= 0;
-        end
-        else begin
-            rst_accumulator_reg_0[0] <= comparator_out;
+            rst_accumulator_reg_0 <= '0;
+        end else begin
+            rst_accumulator_reg_0 <= {rst_accumulator_reg_0[MULTIPLIER_DELAY_SLOTS-2:0], comparator_out};
         end
     end
-    
-    // Delays the reset signal based on multiplier latency by propogating the
-    // signal through the register array
+
+    // rst for different columns - horizontal shift register (1 cycle per column)
     generate
-        genvar j;
-        for (j = 1; j <= MULTIPLIER_DELAY_SLOTS-1; j = j + 1) begin: rst_accumulator_reg_gen
+        if (COLS > 1) begin : rst_horz_prop
             always @(posedge clk) begin
                 if (rst) begin
-                    rst_accumulator_reg_0[j] <= 0;
-                end
-                else begin
-                    rst_accumulator_reg_0[j] <= rst_accumulator_reg_0[j-1];
+                    rst_accumulator_reg_1_to_rest <= '0;
+                end else begin
+                    rst_accumulator_reg_1_to_rest[0] <= rst_accumulator_reg_0[MULTIPLIER_DELAY_SLOTS-1];
+                    for (integer l = 1; l < COLS-1; l = l + 1) begin
+                        rst_accumulator_reg_1_to_rest[l] <= rst_accumulator_reg_1_to_rest[l-1];
+                    end
                 end
             end
         end
     endgenerate
 
-    // rst for different columns
-    // First column is first to receive reset signal
-    generate 
-        assign rst_accumulator[0] = rst_accumulator_reg_0[MULTIPLIER_DELAY_SLOTS-1];
-    endgenerate
-
-    // Continue to propagate the reset signal from column 1 to column 2
-    always @(posedge clk) begin
-        if (rst) begin
-            rst_accumulator_reg_1_to_rest[0] <= 0;
-        end
-        else begin
-            rst_accumulator_reg_1_to_rest[0] <= rst_accumulator_reg_0[MULTIPLIER_DELAY_SLOTS-1];
-        end
-    end
-
-
-    // Propogate reset signal from column 2 to remaining columns
+    // Output rst_accumulator signals (skewed per column)
+    assign rst_accumulator[0] = rst_accumulator_reg_0[MULTIPLIER_DELAY_SLOTS-1];
     generate
-        genvar l;
-        for (l = 1; l < COLS-1; l = l + 1) begin: rst_accumulator_out_reg_gen
-            always @(posedge clk) begin
-                if (rst) begin
-                    rst_accumulator_reg_1_to_rest[l] <= 0;
-                end
-                else begin
-                    rst_accumulator_reg_1_to_rest[l] <= rst_accumulator_reg_1_to_rest[l-1];
-                end
-            end
+        if (COLS > 1) begin
+            assign rst_accumulator[COLS-1:1] = rst_accumulator_reg_1_to_rest;
         end
     endgenerate
 
-    // Output all the reset signals
-    assign rst_accumulator[COLS-1:1] = rst_accumulator_reg_1_to_rest;
-
-    // Stream out signaled by reset of accumulator
-    reg [MULT_LAT+ACC_LAT+COLS-1:0] stream_out_rdy_delay;
+    // Stream out rdy delay line - single shift register
     always @(posedge clk) begin
         if (rst) begin
-            stream_out_rdy_delay[0] <= 0;
-        end
-        else begin
+            stream_out_rdy_delay <= '0;
+        end else begin
             stream_out_rdy_delay[0] <= input_stream_out_rdy;
-        end
-    end
-    generate
-        for (l = 1; l < MULT_LAT+ACC_LAT+COLS; l = l + 1) begin
-            always @(posedge clk) begin
-                if (rst) begin
-                    stream_out_rdy_delay[l] <= 0;
-                end
-                else begin
-                    stream_out_rdy_delay[l] <= stream_out_rdy_delay[l-1];
-                end
+            for (integer l = 1; l < MULT_LAT + ACC_LAT + COLS; l = l + 1) begin
+                stream_out_rdy_delay[l] <= stream_out_rdy_delay[l-1];
             end
         end
-    endgenerate
+    end
 
-    // Output stream_out_rdy signals
-    reg [COLS-1:0] stream_out_rdy_reg;
+    // Output stream_out_rdy signals (broadcast same delayed signal to all columns)
     always @(posedge clk) begin
         if (rst) begin
             stream_out_rdy_reg <= 0;

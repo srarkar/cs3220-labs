@@ -18,39 +18,31 @@ module mac #(
     input       [IN_WIDTH-1:0] row_data_in,
     input       [IN_WIDTH-1:0] col_data_in,
     input       [IN_WIDTH-1:0] bypass_data_in, 
+
     output reg  [IN_WIDTH-1:0] row_data_out,
     output reg  [IN_WIDTH-1:0] col_data_out,
     output reg                 rst_accumulator_out,
     output reg                 stream_out_rdy_out,
-    output reg [OUT_WIDTH-1:0] psum_out
+    output reg [OUT_WIDTH-1:0] psum_out,
+
+    output     [OUT_WIDTH-1:0] psum_capture_out
 );
-
-
-    //TODO: Signal declarations
-
-    // psum will be max possible size of K
     localparam COLS_WIDTH = $clog2(COLS);
-    reg [OUT_WIDTH-1:0] psum [0:(1 << COLS_WIDTH)-1];
-    reg [OUT_WIDTH-1:0] mult_out;
-
     wire [OUT_WIDTH-1:0]    multiplier_out;
     wire                    multiplier_done;
-
     wire [IN_WIDTH-1:0]     adder_in_A;
     wire [IN_WIDTH-1:0]     adder_in_B;
     wire [OUT_WIDTH-1:0]    adder_out;
     wire                    adder_done;
+    
+    reg [OUT_WIDTH-1:0] psum [0:(1 << COLS_WIDTH)-1];
+    reg [OUT_WIDTH-1:0] mult_out;
 
-    // Bypass controls
     wire bypass_en;
     wire [31:0] temp = COLS - 1;
     wire [$clog2(COLS)-1:0] bypass_counter_max = temp[$clog2(COLS)-1:0];
     reg  [$clog2(COLS)-1:0] bypass_counter;
-    
 
-
-    //TODO: multiplier instantiation
-    // Fix-point multiplier
     wire [IN_WIDTH-1:0] mul_in_A = row_data_in;
     wire [IN_WIDTH-1:0] mul_in_B = col_data_in;
     multiplier #(
@@ -72,8 +64,6 @@ module mac #(
         .done(multiplier_done)
     );
 
-
-    //TODO: adder instantiation
     // Fix-point adder
     assign adder_in_A = mult_out;
     assign adder_in_B = (rst_accumulator_in ? '0 : adder_out);
@@ -96,13 +86,6 @@ module mac #(
         .out(adder_out),
         .done(adder_done)
     );
-
-    //TODO: signal propagation and synchronization
-    //Major approaches to look out for:
-    // 1. rst_accumulator and stream_out_rdy are major control signals that dictates the flow of the data and when to reset the accumulator between different matrix multiplications
-    // 2. An important part of the following design is to figure out how the data from multipliers and adders should be paired with the above two control signals
-    // 3. Mainly you need to know: should I pass the results of this very own MAC's accumulator to the next MAC's accumulator or should I pass the results of the previous MAC's accumulator to this MAC's accumulator and when to do so
-    // 4. Also, when should be the exact time point to reset the accumulator so my current results will not be cleared by mistake and the next matrix multiplication can start cleanly.
 
     //pass the row/col/rst/stream_out data 1 clock cycle later
     always @(posedge clk) begin
@@ -129,7 +112,6 @@ module mac #(
             mult_out <= multiplier_out;
         end 
         else begin
-            // mult_out <= row_data_in * col_data_in;
             mult_out <= 0;
         end
     end
@@ -144,9 +126,7 @@ module mac #(
         end
     end
 
-    // propagate the psum
-    // The delay is to wait for all macs inside the array to be ready and is
-    // determined by K.
+    // propagate the psum shift register (delay = K = COLS - col_idx - 1)
     generate
         genvar i;
         for (i = 0; i < (1 << COLS_WIDTH) - 1; i = i + 1) begin: psum_propagate
@@ -170,7 +150,6 @@ module mac #(
             stream_started <= 1;
         end
     end
-
 
     assign bypass_en = (bypass_counter != 0);
 
@@ -204,7 +183,9 @@ module mac #(
         end
     end
 
-    //output the psum; if bypass_en is high, output the bypass_data_in, otherwise output the latest psum
+    assign psum_capture_out = psum_reg;
+
+    //output the psum via bypass chain (used for legacy downstream connectivity)
     always @(posedge clk) begin
         if (rst) begin
             psum_out     <= '0;

@@ -42,7 +42,7 @@ VL_FLAGS_TEST_CTRL += --exe -cc ctrl.v --top-module ctrl --trace --trace-structs
 VL_FLAGS_TEST_SYSTOLIC_ARRAY+= --exe -cc systolic_array.v --top-module systolic_array --trace --trace-structs #--timing
 #VL_FLAGS += --assert -Wall -Wpedantic -Wno-DECLFILENAME -Wno-UNUSED --x-initial unique --x-assign unique
 VL_FLAGS += --assert -Wpedantic -Wno-DECLFILENAME -Wno-UNUSED --x-initial unique --x-assign unique
-CXXFLAGS += -DVCD_OUTPUT -DDPRINTF
+CXXFLAGS += -DDPRINTF 
 #CXXFLAGS += -DVCD_OUTPUT 
 LDFLAGS += 
 
@@ -53,6 +53,7 @@ K = 20
 NUM_TESTS = 1
 SEED = 1
 TEST_FILE = test_systolic_array.cpp
+
 
 CXXFLAGS_RxC = $(CXXFLAGS) -DROWS=$(ROWS) -DCOLS=$(COLS) -DK=$(K)
 
